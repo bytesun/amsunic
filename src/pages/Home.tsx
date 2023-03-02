@@ -49,6 +49,8 @@ function Home() {
     });
     console.log(result)
   }
+
+  
   return (
     <div className="w-full h-full bg-cover"
       style={{ backgroundImage: 'url("header_bg.jpg")' }}
