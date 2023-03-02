@@ -1,15 +1,18 @@
+// @ts-nocheck
 import { useEffect, useState } from 'react'
 import moment from 'moment';
 
 import PostForm from '../components/PostForm';
 
+import { uploadFile } from "@junobuild/core";
 
+import { signIn, setDoc, authSubscribe, signOut } from "@junobuild/core";
 
-import { signIn, setDoc, authSubscribe, User, signOut } from "@junobuild/core";
 
 function Console() {
-    const [user, setUser] = useState<User | null>();
+    const [user, setUser] = useState();
 
+    const [file, setFile] = useState();
 
     useEffect(() => {
 
@@ -26,6 +29,27 @@ function Console() {
         await signIn();
     }
 
+
+    function handleChange(e) {
+        console.log(e)
+    };
+
+    async function upload() {
+        console.log("uploading file...")
+        if (file !== undefined) {
+
+            const filename = `${user.key}-${file.name}`;
+            console.log(filename)
+            const { downloadUrl } = await uploadFile({
+                data: file,
+                collection: "photos",
+                filename,
+            });
+            console.log(downloadUrl)
+        } else {
+            console.error("no file")
+        }
+    };
 
     return (
         <div>
@@ -55,6 +79,10 @@ function Console() {
                 </div>
                 <PostForm />
             </div>}
+
+            <input type="file" name="file" onChange={(event) => setFile(event.target.files?.[0])} />
+            <button onClick={upload}>upload</button>
+            <img src="https://ruc7a-fiaaa-aaaal-ab4ha-cai.ic0.app/photos/kmbsf-rmete-cs5al-ua34b-4db7w-vwqus-txsl3-eoit5-huk2w-kb6df-hae-496bfd2c-f593-4da4-85ec-3fe8ad8c3881.png"  />
         </div>
     )
 }

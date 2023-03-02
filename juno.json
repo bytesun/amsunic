@@ -1,6 +1,41 @@
 {
   "satellite": {
     "satelliteId": "ruc7a-fiaaa-aaaal-ab4ha-cai",
-    "source": "dist"
+    "source": "dist",
+    "storage": {
+      "headers": [
+        {
+          "source": "/",
+          "headers": [
+            [
+              "Cache-Control",
+              "public,max-age=0,must-revalidate"
+            ]
+          ]
+        },
+        {
+          "source": "assets/fonts/*",
+          "headers": [
+            [
+              "Cache-Control",
+              "max-age=31536000"
+            ]
+          ]
+        },
+        {
+          "source": "**/*.png",
+          "headers": [
+            [
+              "Cache-Control",
+              "max-age=31536000"
+            ],
+            [
+              "Access-Control-Allow-Origin",
+              "*"
+            ]
+          ]
+        }
+      ]
+    }
   }
 }
