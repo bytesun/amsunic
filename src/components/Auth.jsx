@@ -21,7 +21,6 @@ export const Auth = ({ children }) => {
       {user !== undefined && user !== null ? (
         <div>
           {children}
-
           <Logout />
         </div>
       ) : (

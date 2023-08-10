@@ -3,7 +3,7 @@ import { signIn } from "@junobuild/core";
 export const Login = () => {
   return (
     
-    <div className="mt-10 flex items-center justify-center gap-x-6">
+    <div className="flex items-center justify-center gap-x-6">
       <button
         type="button"
         onClick={signIn}
