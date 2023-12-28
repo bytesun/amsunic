@@ -6,7 +6,7 @@ const GoogleMapComponent: React.FC = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: 'AIzaSyBlWjbTNTDIZJ-FrLpRPr13uZ5gA0Mfmvg',
+      apiKey: '<>',
       version: 'weekly',
     });
 
