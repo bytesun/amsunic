@@ -1,23 +1,34 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
 import moment from 'moment';
-import { Container, Card, Grid, Header, Item, Menu, Message } from 'semantic-ui-react';
+import { Container, Card, Grid, Label, Icon, Menu, Modal } from 'semantic-ui-react';
 
 import { initJuno } from "@junobuild/core";
 import { Auth } from "./components/Auth";
 import Posts from './components/Posts';
-
+import GoogleMapComponent from './components/GoogleMapComponent';
+import Content from "./components/openchat/Content";
+import OpenChatFrame from "./components/openchat/OpenChatFrame";
+import HikingSchedule from './components/HikingSchedule';
 type Status = {
 
   status: String,
 
 };
-
+type Chat = {
+  path: string;
+  title: string;
+};
 function App() {
-  const [user, setUser] = useState();
 
-  const [file, setFile] = useState();
-  const [items, setItems] = useState([]);
+  const [openHiking, setOpenHiking] = useState(false);
+  const [openChat, setOpenChat] = useState(false);
+
+  const [leftChat, setLeftChat] = useState<Chat>({
+    path: "/community/z4by7-xyaaa-aaaar-aszzq-cai/channel/242488564411966582284831137099269973854",
+    title: "Message",
+  });
+
   useEffect(() => {
 
     (async () =>
@@ -31,42 +42,69 @@ function App() {
 
   return (
     <Container>
-     <Menu pointing secondary>
-     <Menu.Item>Home</Menu.Item>
-     {/* <Menu.Item>Photos</Menu.Item> */}
-     <Menu.Item position='right'><Auth /></Menu.Item>
-     </Menu>
+      <Menu pointing secondary>
+        <Menu.Item header>Sun</Menu.Item>
+        <Menu.Item position='right'><Auth /></Menu.Item>
+      </Menu>
       <Grid columns={2}>
-        <Grid.Column mobile={12} computer={5}>
-          <Card>
+        <Grid.Column mobile={16} computer={5}>
+          <Card fluid>
             <Card.Content>
-              <Card.Header>Sun</Card.Header>
-              <Card.Meta><a href="https://twitter.com/orcsun" target='_blank'>twitter: @orcsun</a></Card.Meta>
-              <Card.Description>
-                This is my personal website
-              </Card.Description>
-              <Card.Description>
-                Beside posting my stuff, try to demostrate how to integrate other projects in IC ecostystem.
-              </Card.Description>
+              My interests
+            </Card.Content>
+            <Card.Content>
 
+              <Label>Hiking</Label>
+              <Label>Garden</Label>
+              <Label>Blockchain</Label>
+              <Label>ICP</Label>
             </Card.Content>
+
           </Card>
-          
-          <Card>
-            <Card.Content>
-              <Card.Header>Integrations</Card.Header>
-              <Card.Meta><a href="https://juno.build/" target='_blank'>Juno(hosting and storage)</a></Card.Meta>
-              <Card.Meta><a href="https://github.com/ICEvent/Inbox" target='_blank'>Inbox(wallet/message)</a></Card.Meta>
-              <Card.Meta><a href="https://oneblock.page/" target='_blank'>Oneblock(profile)</a></Card.Meta>
-              <Card.Meta><a href="https://vfclb-tyaaa-aaaap-aawna-cai.ic0.app/" target='_blank'>Blocklist(escrow)</a></Card.Meta>
-              <Card.Meta><a href="https://icevent.app/" target='_blank'>ICEvent(calendar/todo/note)</a></Card.Meta>
-            </Card.Content>
-          </Card>
+
+          <Menu vertical fluid>
+            <Menu.Item onClick={() => setOpenHiking(true)}><Icon name="calendar" color='blue' />Hiking Schedule</Menu.Item>
+            <Menu.Item onClick={() => setOpenChat(true)}><Icon name="chat" color='blue' />OpenChat</Menu.Item>
+
+          </Menu>
         </Grid.Column>
-        <Grid.Column  mobile={12} computer={11}>
+        <Grid.Column mobile={16} computer={11}>
+
+
+
           <Posts />
         </Grid.Column>
       </Grid>
+
+
+      <Modal
+
+        onClose={() => setOpenHiking(false)}
+        onOpen={() => setOpenHiking(true)}
+        open={openHiking}
+        size='fullscreen'
+      >
+        
+        <Modal.Content>
+            <HikingSchedule />
+            <a href="https://icevent.app" target='_blank'>ICEvent</a>
+        </Modal.Content>
+
+      </Modal>
+
+
+      <Modal
+
+        onClose={() => setOpenChat(false)}
+        onOpen={() => setOpenChat(true)}
+        open={openChat}
+        size='large'
+      >
+        <Modal.Content>
+          <OpenChatFrame {...leftChat} />
+        </Modal.Content>
+
+      </Modal>
 
     </Container>
 
