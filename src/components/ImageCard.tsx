@@ -5,11 +5,17 @@ interface ImageCardProps {
   title: string;
   imageUrl: string;
   description: string;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const ImageCard: React.FC<ImageCardProps> = ({ title, imageUrl, description }) => {
+const ImageCard: React.FC<ImageCardProps> = ({ title, imageUrl, description,onClick }) => {
+    const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => {
+        if (onClick) {
+          onClick(event);
+        }
+      };
   return (
-    <Card>
+    <Card onClick={handleClick}>
       <Image src={imageUrl} wrapped ui={false} />
     </Card>
   );

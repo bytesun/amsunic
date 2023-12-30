@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Image, Modal } from 'semantic-ui-react';
 
 import { listAssets } from "@junobuild/core";
 import ImageCard from './ImageCard';
@@ -17,6 +17,8 @@ interface ImageListProps {
 const ImageList: React.FC<ImageListProps> = () => {
 
   const [images, setImages] = useState<ImageData[]>([])
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [theImage, setTheImage] = useState<ImageData>()
 
   useEffect(()=>{
     loadImages();
@@ -36,6 +38,12 @@ const ImageList: React.FC<ImageListProps> = () => {
     }))
     setImages(loadImages);
   }
+
+  function clickImage(image:ImageData){
+    setTheImage(image)
+    setShowImageModal(true)
+  };
+
   return (
     <Grid columns={3}>
       {images.map((image, index) => (
@@ -44,9 +52,19 @@ const ImageList: React.FC<ImageListProps> = () => {
             title={""}
             imageUrl={image.downloadUrl}
             description={image.description ? image.description : ""}
+            onClick={()=>clickImage(image)}
           />
         </Grid.Column>
       ))}
+
+      <Modal
+        onClose={() => setShowImageModal(false)}
+        onOpen={() => setShowImageModal(true)}
+        open={showImageModal}
+        size='fullscreen'
+      >
+        <Image src={theImage?.downloadUrl}/>
+      </Modal>
     </Grid>
   );
 };

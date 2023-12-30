@@ -72,6 +72,7 @@ function App() {
 
           </Menu>
         </Grid.Column>
+        
         <Grid.Column mobile={16} computer={11}>
 
           {showImages && <ImageList/>}
