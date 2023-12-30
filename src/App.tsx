@@ -10,6 +10,8 @@ import GoogleMapComponent from './components/GoogleMapComponent';
 import Content from "./components/openchat/Content";
 import OpenChatFrame from "./components/openchat/OpenChatFrame";
 import HikingSchedule from './components/HikingSchedule';
+import ImageList from './components/ImageList';
+
 type Status = {
 
   status: String,
@@ -21,6 +23,7 @@ type Chat = {
 };
 function App() {
 
+  const [showImages, setShowImages] = useState(true);
   const [openHiking, setOpenHiking] = useState(false);
   const [openChat, setOpenChat] = useState(false);
 
@@ -63,6 +66,7 @@ function App() {
           </Card>
 
           <Menu vertical fluid>
+
             <Menu.Item onClick={() => setOpenHiking(true)}><Icon name="calendar" color='blue' />Hiking Schedule</Menu.Item>
             <Menu.Item onClick={() => setOpenChat(true)}><Icon name="chat" color='blue' />OpenChat</Menu.Item>
 
@@ -70,7 +74,7 @@ function App() {
         </Grid.Column>
         <Grid.Column mobile={16} computer={11}>
 
-
+          {showImages && <ImageList/>}
 
           <Posts />
         </Grid.Column>
