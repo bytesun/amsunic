@@ -39,7 +39,10 @@ function Posts() {
     const { items } = await listDocs({
       collection: "post",
       filter: {
-        // matcher: user.key,
+        order: {
+          desc: true,
+          field: "created_at",
+        },
       },
     });
     console.log(items)

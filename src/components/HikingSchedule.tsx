@@ -29,15 +29,26 @@ const HikingSchedule = (props:{events:[]}) => {
     //     fetchEvents(ftype, s, e);
     
     //   }
-
+    const CustomToolbar = ({  }) => {
+        return (
+          <div>
+            <span>  </span>
+            
+          </div>
+        );
+      };
     return (
         <Calendar
             localizer={localizer}
             events={props.events}
             startAccessor="start"
             endAccessor="end"
+            views={["month"]}
             // onNavigate={navigator}
             style={{ height: 500 }}
+            components={{
+                toolbar: CustomToolbar
+              }}
         />
     )
 }

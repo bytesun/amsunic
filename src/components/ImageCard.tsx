@@ -9,7 +9,7 @@ interface ImageCardProps {
 }
 
 const ImageCard: React.FC<ImageCardProps> = ({ title, imageUrl, description,onClick }) => {
-    const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => {
+    const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
         if (onClick) {
           onClick(event);
         }

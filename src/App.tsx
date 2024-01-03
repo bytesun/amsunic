@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useEffect, useState } from 'react'
 import moment from 'moment';
-import { Container, Card, Grid, Label, Icon, Menu, Modal } from 'semantic-ui-react';
+import { Container, Card, Grid, Label, Image, Menu, Modal, Divider } from 'semantic-ui-react';
 
 import { initJuno } from "@junobuild/core";
 import { Auth } from "./components/Auth";
@@ -46,37 +46,49 @@ function App() {
   return (
     <Container>
       <Menu pointing secondary>
-        <Menu.Item header>Sun</Menu.Item>
+        <Menu.Item header>
+        <Image 
+          src='logo.png' 
+          size='mini' 
+          style={{ marginRight: '1.5em' }} 
+        />
+        </Menu.Item>
         <Menu.Item position='right'><Auth /></Menu.Item>
       </Menu>
       <Grid columns={2}>
         <Grid.Column mobile={16} computer={5}>
           <Card fluid>
             <Card.Content>
-              My interests
+              Money, Data, and Knowledge
             </Card.Content>
             <Card.Content>
 
               <Label>Hiking</Label>
               <Label>Garden</Label>
-              <Label>Blockchain</Label>
-              <Label>ICP</Label>
+              <Label>Secure</Label>
+              <Label>Freedom</Label>
             </Card.Content>
 
           </Card>
 
           <Menu vertical fluid>
 
-            <Menu.Item onClick={() => setOpenHiking(true)}><Icon name="calendar" color='blue' />Hiking Schedule</Menu.Item>
-            <Menu.Item onClick={() => setOpenChat(true)}><Icon name="chat" color='blue' />OpenChat</Menu.Item>
+            <Menu.Item>
+              <a href="https://movies.vansday.net" target='_blank'>Movie Theater</a>
+            </Menu.Item>
+            <Menu.Item>
+              <a href="https://icevent.app/calendar/25" target='_blank'>Hiking Schedule</a>
+            </Menu.Item>
 
           </Menu>
+
+          <HikingSchedule/>
         </Grid.Column>
         
         <Grid.Column mobile={16} computer={11}>
 
-          {showImages && <ImageList/>}
-
+          <div>{showImages && <ImageList/>}</div>
+          <Divider/>
           <Posts />
         </Grid.Column>
       </Grid>

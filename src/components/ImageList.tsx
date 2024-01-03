@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import { Grid, Image, Modal } from 'semantic-ui-react';
 
-import { listAssets } from "@junobuild/core";
+import { listAssets,authSubscribe,User } from "@junobuild/core";
 import ImageCard from './ImageCard';
 
 interface ImageData {
@@ -15,22 +15,36 @@ interface ImageListProps {
 }
 
 const ImageList: React.FC<ImageListProps> = () => {
+  const [user, setUser] = useState<User|null>();
 
   const [images, setImages] = useState<ImageData[]>([])
   const [showImageModal, setShowImageModal] = useState(false);
   const [theImage, setTheImage] = useState<ImageData>()
 
-  useEffect(()=>{
+  useEffect(() => {
+
+    const sub = authSubscribe((user) => {
+      console.log("user:", user)
+      setUser(user);
+
+    });
     loadImages();
-  },[]);
+    return () => sub();
+  }, [user]);
 
   async function loadImages(){
     const myList = await listAssets({
       collection: "photos",
+      filter: {
+        order: {
+          desc: true,
+          field: "created_at",
+        },
+      },
     });
 
     let loadImages:ImageData[] = []
-
+    console.log("images:", myList.assets);
     myList.assets.map(as => loadImages.push({
       name: as.name,
       downloadUrl: as.downloadUrl,
