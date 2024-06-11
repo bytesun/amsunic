@@ -32,6 +32,7 @@ function App() {
     title: "Message",
   });
 
+
   useEffect(() => {
 
     (async () =>
@@ -47,11 +48,12 @@ function App() {
     <Container>
       <Menu pointing secondary>
         <Menu.Item header>
-        <Image 
-          src='logo.png' 
-          size='mini' 
-          style={{ marginRight: '1.5em' }} 
-        />
+          <Image
+            src='logo.png'
+            size='mini'
+            style={{ marginRight: '1.5em' }}
+          />
+          Sun
         </Menu.Item>
         <Menu.Item position='right'><Auth /></Menu.Item>
       </Menu>
@@ -59,36 +61,24 @@ function App() {
         <Grid.Column mobile={16} computer={5}>
           <Card fluid>
             <Card.Content>
-              Money, Data, and Knowledge
-            </Card.Content>
-            <Card.Content>
-
+              Be the change you want to see in the world.
+              <Label>Blockchain</Label>
               <Label>Hiking</Label>
               <Label>Garden</Label>
-              <Label>Secure</Label>
-              <Label>Freedom</Label>
             </Card.Content>
 
           </Card>
 
           <Menu vertical fluid>
-
-            <Menu.Item>
-              <a href="https://movies.vansday.net" target='_blank'>Movie Theater</a>
-            </Menu.Item>
             <Menu.Item>
               <a href="https://icevent.app/calendar/25" target='_blank'>Hiking Schedule</a>
             </Menu.Item>
 
           </Menu>
-
-          <HikingSchedule/>
+          <ImageList />
         </Grid.Column>
-        
-        <Grid.Column mobile={16} computer={11}>
 
-          <div>{showImages && <ImageList/>}</div>
-          <Divider/>
+        <Grid.Column mobile={16} computer={11}>
           <Posts />
         </Grid.Column>
       </Grid>
@@ -101,10 +91,10 @@ function App() {
         open={openHiking}
         size='fullscreen'
       >
-        
+
         <Modal.Content>
-            <HikingSchedule />
-            <a href="https://icevent.app" target='_blank'>ICEvent</a>
+          <HikingSchedule />
+          <a href="https://icevent.app" target='_blank'>ICEvent</a>
         </Modal.Content>
 
       </Modal>

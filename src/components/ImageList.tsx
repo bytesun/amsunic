@@ -2,7 +2,8 @@ import React,{useEffect, useState} from 'react';
 import { Grid, Image, Modal } from 'semantic-ui-react';
 
 import { listAssets,authSubscribe,User } from "@junobuild/core";
-import ImageCard from './ImageCard';
+import PhotoCarousel from './PhotoCarousel';
+import ImageForm from './ImageForm';
 
 interface ImageData {
   name: string;
@@ -17,7 +18,7 @@ interface ImageListProps {
 const ImageList: React.FC<ImageListProps> = () => {
   const [user, setUser] = useState<User|null>();
 
-  const [images, setImages] = useState<ImageData[]>([])
+  const [images, setImages] = useState<string[]>([])
   const [showImageModal, setShowImageModal] = useState(false);
   const [theImage, setTheImage] = useState<ImageData>()
 
@@ -43,13 +44,9 @@ const ImageList: React.FC<ImageListProps> = () => {
       },
     });
 
-    let loadImages:ImageData[] = []
+    let loadImages:string[] = []
     console.log("images:", myList.assets);
-    myList.assets.map(as => loadImages.push({
-      name: as.name,
-      downloadUrl: as.downloadUrl,
-      description: as.description
-    }))
+    myList.assets.map(as => loadImages.push(as.downloadUrl))
     setImages(loadImages);
   }
 
@@ -59,27 +56,33 @@ const ImageList: React.FC<ImageListProps> = () => {
   };
 
   return (
-    <Grid columns={3}>
-      {images.map((image, index) => (
-        <Grid.Column key={index}>
-          <ImageCard
-            title={""}
-            imageUrl={image.downloadUrl}
-            description={image.description ? image.description : ""}
-            onClick={()=>clickImage(image)}
-          />
-        </Grid.Column>
-      ))}
+    <>
+    { user && <ImageForm />}
+    <PhotoCarousel images={images} />
+    </>
+    
+    
+    // <Grid columns={3}>
+    //   {images.map((image, index) => (
+    //     <Grid.Column key={index}>
+    //       <ImageCard
+    //         title={""}
+    //         imageUrl={image.downloadUrl}
+    //         description={image.description ? image.description : ""}
+    //         onClick={()=>clickImage(image)}
+    //       />
+    //     </Grid.Column>
+    //   ))}
 
-      <Modal
-        onClose={() => setShowImageModal(false)}
-        onOpen={() => setShowImageModal(true)}
-        open={showImageModal}
-        size='fullscreen'
-      >
-        <Image src={theImage?.downloadUrl}/>
-      </Modal>
-    </Grid>
+    //   <Modal
+    //     onClose={() => setShowImageModal(false)}
+    //     onOpen={() => setShowImageModal(true)}
+    //     open={showImageModal}
+    //     size='fullscreen'
+    //   >
+    //     <Image src={theImage?.downloadUrl}/>
+    //   </Modal>
+    // </Grid>
   );
 };
 

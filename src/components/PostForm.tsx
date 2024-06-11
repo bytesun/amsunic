@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react'
 import moment from 'moment';
 
 import { signIn, setDoc, authSubscribe, User, signOut } from "@junobuild/core";
-import { uploadFile } from "@junobuild/core";
-import { Form,Input,Image } from 'semantic-ui-react';
+import { Form, Input, Image } from 'semantic-ui-react';
 
 type Status = {
     tags: String[],
@@ -17,13 +16,8 @@ function PostForm(props) {
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const [file, setFile] = useState();
     const [url, setUrl] = useState();
 
-
-    const handleFileChange = (e) => {
-      setFile(e.target.files[0]);
-    };
 
     useEffect(() => {
 
@@ -47,30 +41,9 @@ function PostForm(props) {
         }
         );
     }
-    function handleChange(e) {
-        console.log(e)
-    };
 
-    async function upload() {
-        console.log("uploading file...")
-        if (file !== undefined) {
-            setLoading(true)
-            const filename = `${user.key}-${file.name}`;
-            console.log(filename)
-            const { downloadUrl } = await uploadFile({
-                data: file,
-                collection: "photos",
-                filename,
-            });
-            console.log(downloadUrl)
-            setUrl(downloadUrl)
-            setLoading(false);
-        } else {
-            console.error("no file")
-        }
-    };
+
     return (
-        <>
         <Form loading={props.processing}>
 
             <Form.TextArea value={status}
@@ -80,16 +53,7 @@ function PostForm(props) {
 
         </Form>
 
-        <Form loading={loading}>
 
-        <Input type="file" onChange={handleFileChange} />
-
-        <Form.Button onClick={upload}>Upload</Form.Button>
-
-        </Form>
-        
-        {url && <Image src={url}/>}
-        </>
 
     )
 }
