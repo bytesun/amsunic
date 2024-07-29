@@ -55,16 +55,19 @@ function App() {
           />
           Sun
         </Menu.Item>
-        <Menu.Item position='right'><Auth /></Menu.Item>
+        {/* <Menu.Item position='right'><Auth /></Menu.Item> */}
       </Menu>
       <Grid columns={2}>
         <Grid.Column mobile={16} computer={5}>
           <Card fluid>
             <Card.Content>
-              Be the change you want to see in the world.
+              Dream Big
+              <Card.Content>
+              </Card.Content>
               <Label>Blockchain</Label>
               <Label>Hiking</Label>
               <Label>Garden</Label>
+              <Label>Tong(同)</Label>
             </Card.Content>
 
           </Card>
@@ -73,9 +76,19 @@ function App() {
             <Menu.Item>
               <a href="https://icevent.app/calendar/25" target='_blank'>Hiking Schedule</a>
             </Menu.Item>
-
+            <Menu.Item>
+              <a href="https://oneblock.page" target='_blank'>OneBlock</a>
+            </Menu.Item>
+            <Menu.Item>
+              <a href="https://vansday.net" target='_blank'>ICEscrow</a>
+            </Menu.Item>
+            <Menu.Item>
+              <a href="https://icevent.app" target='_blank'>ICEvent</a>
+            </Menu.Item>
           </Menu>
           <ImageList />
+
+
         </Grid.Column>
 
         <Grid.Column mobile={16} computer={11}>
