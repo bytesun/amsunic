@@ -30,7 +30,8 @@
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
     "sort-by": "^0.0.2",
-    "tw-elements": "^1.0.0-beta1"
+    "tw-elements": "^1.0.0-beta1",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.43.3",

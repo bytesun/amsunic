@@ -5,6 +5,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import './index.css';
 
 import App from './App';
+import { initSatellite } from "@junobuild/core";
+
 // const router = createBrowserRouter([
 //   {
 //     path: "/",
@@ -16,13 +18,17 @@ import App from './App';
 //   },
 // ]);
 
-// initJuno({
-//   satelliteId: "ruc7a-fiaaa-aaaal-ab4ha-cai",
-// });
 
+const init = async () => {
+  await initSatellite({
+    satelliteId: "ruc7a-fiaaa-aaaal-ab4ha-cai"
+  });
+};
+  
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
 )
+init();

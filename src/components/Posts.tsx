@@ -17,18 +17,16 @@ type Status = {
 
 function Posts() {
   const [user, setUser] = useState();
-
   const [file, setFile] = useState();
-
   const [loading, setLoading] = useState(false);
-
   const [items, setItems] = useState([]);
-  useEffect(() => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 10;
 
+  useEffect(() => {
     const sub = authSubscribe((user) => {
       console.log("user:", user)
       setUser(user);
-
     });
     list();
     return () => sub();
@@ -47,7 +45,6 @@ function Posts() {
     });
     console.log(items)
     setItems(items);
-
   };
 
   async function addPost(doc) {
@@ -60,24 +57,32 @@ function Posts() {
     list();
   }
 
-  const statuslist = items.map(item =>
-    <PostCard post={item} key={item.key} />
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = items.slice(indexOfFirstPost, indexOfLastPost);
 
+  const statuslist = currentPosts.map(item =>
+    <PostCard post={item} key={item.key} />
   )
 
   return (
     <Container>
-      {/* {user && user.key} */}
       {user && <PostForm submit={addPost} processing={loading}/>}
       <Item.Group divided>
-
         {statuslist}
       </Item.Group>
-
-    </Container >
-
       
+      <Menu pagination>
+        {Array.from({ length: Math.ceil(items.length / postsPerPage) }).map((_, index) => (
+          <Menu.Item
+            key={index + 1}
+            active={currentPage === index + 1}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </Menu.Item>
+        ))}
+      </Menu>
+    </Container>
   )
-}
-
-export default Posts
+}export default Posts
