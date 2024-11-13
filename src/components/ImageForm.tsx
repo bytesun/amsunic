@@ -10,7 +10,8 @@ function ImageForm(props) {
     const [user, setUser] = useState();
 
     const [loading, setLoading] = useState(false);
-
+    const [collection, setCollection] = useState("photos");
+    
     const [file, setFile] = useState();
     const [url, setUrl] = useState();
 
@@ -38,7 +39,7 @@ function ImageForm(props) {
             console.log(filename)
             const { downloadUrl } = await uploadFile({
                 data: file,
-                collection: "photos",
+                collection: collection,
                 filename,
             });
             console.log(downloadUrl)
@@ -53,8 +54,14 @@ function ImageForm(props) {
             <Form loading={loading}>
 
                 <FormGroup>
-                    <Input type="file" onChange={handleFileChange} />
 
+                    <Input type="file" onChange={handleFileChange} />
+                    <Input
+                        type="text"
+                        placeholder="Collection name"
+                        value={collection}
+                        onChange={(e) => setCollection(e.target.value)}
+                    />
                     <Form.Button onClick={upload}>Upload</Form.Button>
                 </FormGroup>
             </Form>

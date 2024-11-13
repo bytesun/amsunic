@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Container, Card, Grid, Label, Image, Menu, Modal, Divider, Button, Form, TextArea } from 'semantic-ui-react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { User, authSubscribe ,setDoc } from "@junobuild/core";
+import { User, authSubscribe, setDoc, uploadFile } from "@junobuild/core";
 import { Auth } from "./components/Auth";
 import Posts from './components/Posts';
 import GoogleMapComponent from './components/GoogleMapComponent';
@@ -25,7 +25,19 @@ type Chat = {
   path: string;
   title: string;
 };
+
+type TestimonialForm = {
+  name: string;
+  content: string;
+  date: string;
+  imageUrl: string;
+};
+
+
 function App() {
+
+  const [showTestimonialForm, setShowTestimonialForm] = useState(false);
+  const [testimonial, setTestimonial] = useState('');
 
   const [showImages, setShowImages] = useState(true);
   const [openHiking, setOpenHiking] = useState(false);
@@ -36,6 +48,14 @@ function App() {
   // Add these states inside App component
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [message, setMessage] = useState('');
+  // Add this with other state declarations
+  const [testimonialForm, setTestimonialForm] = useState<TestimonialForm>({
+    name: '',
+    content: '',
+    date: moment().format('YYYY-MM-DD'),
+    imageUrl: ''
+  });
+  const [testimonialLoading, setTestimonialLoading] = useState(false);
 
   useEffect(() => {
     const unsubscribe = authSubscribe((user: User | null) => {
@@ -81,7 +101,7 @@ function App() {
       }
     });
     setMessage('');
-    
+
   };
 
   const [leftChat, setLeftChat] = useState<Chat>({
@@ -90,6 +110,54 @@ function App() {
   });
 
 
+  const submitTestimonial = async () => {
+    if (!testimonialForm.name || !testimonialForm.content) return;
+    setTestimonialLoading(true);
+    const key = uuidv4();
+    let downloadUrl = '';
+    try {
+      // Upload image if exists
+      if (testimonialForm.file) {
+
+        const filename = `${user.key}-${testimonialForm.file.name}`;
+        const result = await uploadFile({
+          data: testimonialForm.file,
+          collection: "hortsun_testimonials",
+          filename,
+        });
+        console.log(result.downloadUrl);
+        downloadUrl = result.downloadUrl;
+      }
+
+      // Save testimonial document
+      await setDoc({
+        collection: "hortsun_testimonials",
+        doc: {
+          key: key,
+          data: {
+            id: key,
+            name: testimonialForm.name,
+            content: testimonialForm.content,
+            date: testimonialForm.date,
+            imageUrl: downloadUrl,
+            created_at: new Date().getTime(),
+            user_id: user.key
+          }
+        }
+      });
+
+      // Reset form and close modal
+      setTestimonialForm({
+        name: '',
+        content: '',
+        date: moment().format('YYYY-MM-DD'),
+        imageUrl: ''
+      });
+      setShowTestimonialForm(false);
+    } finally {
+      setTestimonialLoading(false);
+    }
+  };
 
 
 
@@ -117,7 +185,7 @@ function App() {
               <Label>Blockchain</Label>
               <Label>Hiking</Label>
               <Label>Garden</Label>
-
+              {user?.key}
             </Card.Content>
 
           </Card>
@@ -139,9 +207,11 @@ function App() {
             <Menu.Item>
               <a href="https://alltracks.icevent.app/" target='_blank'>Hiking Track</a>
             </Menu.Item>
-            
             <Menu.Item>
               <Button fluid onClick={() => setShowMessageForm(true)}>Leave a Message</Button>
+            </Menu.Item>
+            <Menu.Item>
+              <Button fluid onClick={() => setShowTestimonialForm(true)}>Add Testimonial</Button>
             </Menu.Item>
           </Menu>
           <ImageList />
@@ -198,7 +268,7 @@ function App() {
       >
         <Modal.Header>Leave a Message</Modal.Header>
         <Modal.Content>
-          <Form>
+          <Form >
             <TextArea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -211,9 +281,52 @@ function App() {
           <Button positive onClick={saveMessage}>Send</Button>
         </Modal.Actions>
       </Modal>
+      <Modal
+        size='small'
+        open={showTestimonialForm}
+        onClose={() => setShowTestimonialForm(false)}
+      >
+        <Modal.Header>Share Your Experience</Modal.Header>
+        <Modal.Content>
+          <Form loading={testimonialLoading}>
+            <Form.Input
+              label="Name"
+              value={testimonialForm.name}
+              onChange={(e) => setTestimonialForm({ ...testimonialForm, name: e.target.value })}
+              placeholder='Your name'
+            />
+            <Form.TextArea
+              label="Testimonial"
+              value={testimonialForm.content}
+              onChange={(e) => setTestimonialForm({ ...testimonialForm, content: e.target.value })}
+              placeholder='Share your experience...'
+            />
+            <Form.Input
+              type="date"
+              label="Date"
+              value={testimonialForm.date}
+              onChange={(e) => setTestimonialForm({ ...testimonialForm, date: e.target.value })}
+            />
+            <Form.Input
+              type="file"
+              label="Upload Image"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                setTestimonialForm({ ...testimonialForm, file: file });
+              }}
+            />
+          </Form>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setShowTestimonialForm(false)}>Cancel</Button>
+          <Button positive loading={testimonialLoading} onClick={submitTestimonial}>Submit</Button>
+        </Modal.Actions>
+      </Modal>
     </Container>
 
   )
 }
 
 export default App
+
+
