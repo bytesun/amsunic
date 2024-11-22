@@ -33,6 +33,12 @@ type TestimonialForm = {
   imageUrl: string;
 };
 
+type WorksForm = {
+  title: string;
+  description: string;
+  date: string;
+  imageUrl: string;
+};
 
 function App() {
 
@@ -56,6 +62,14 @@ function App() {
     imageUrl: ''
   });
   const [testimonialLoading, setTestimonialLoading] = useState(false);
+  const [showWorksForm, setShowWorksForm] = useState(false);
+  const [worksForm, setWorksForm] = useState<WorksForm>({
+    title: '',
+    description: '',
+    date: moment().format('YYYY-MM-DD'),
+    imageUrl: ''
+  });
+
 
   useEffect(() => {
     const unsubscribe = authSubscribe((user: User | null) => {
@@ -159,7 +173,39 @@ function App() {
     }
   };
 
+  const submitWorks = async () => {
+    if (!worksForm.title || !worksForm.description) return;
+    const key = uuidv4();   
 
+    try {
+
+      await setDoc({
+        collection: "hortsun_works",
+        doc: {
+          key: key,
+          data: {
+            id: key,
+            title: worksForm.title,
+            description: worksForm.description,
+            date: worksForm.date,
+            imageUrl: worksForm.imageUrl,
+            created_at: new Date().getTime(),
+            user_id: user.key
+          }
+        }
+      });
+
+      setWorksForm({
+        title: '',
+        description: '',
+        date: moment().format('YYYY-MM-DD'),
+        imageUrl: ''
+      });
+      setShowWorksForm(false);
+    } catch (error) {
+      console.error('Error submitting works:', error);
+    }
+  };
 
 
   return (
@@ -210,9 +256,16 @@ function App() {
             <Menu.Item>
               <Button fluid onClick={() => setShowMessageForm(true)}>Leave a Message</Button>
             </Menu.Item>
-            <Menu.Item>
-              <Button fluid onClick={() => setShowTestimonialForm(true)}>Add Testimonial</Button>
-            </Menu.Item>
+            {user &&
+              <Menu.Item>
+                <Button fluid onClick={() => setShowTestimonialForm(true)}>Add Testimonial</Button>
+              </Menu.Item>
+            }
+            {user &&
+              <Menu.Item>
+                <Button fluid onClick={() => setShowWorksForm(true)}>Add Works</Button>
+              </Menu.Item>
+            }
           </Menu>
           <ImageList />
 
@@ -322,6 +375,46 @@ function App() {
           <Button positive loading={testimonialLoading} onClick={submitTestimonial}>Submit</Button>
         </Modal.Actions>
       </Modal>
+      <Modal
+        size='small'
+        open={showWorksForm}
+        onClose={() => setShowWorksForm(false)}
+      >
+        <Modal.Header>Add New Work</Modal.Header>
+        <Modal.Content>
+          <Form>
+            <Form.Input
+              label="Title"
+              value={worksForm.title}
+              onChange={(e) => setWorksForm({ ...worksForm, title: e.target.value })}
+              placeholder='Work title'
+            />
+            <Form.TextArea
+              label="Description"
+              value={worksForm.description}
+              onChange={(e) => setWorksForm({ ...worksForm, description: e.target.value })}
+              placeholder='Describe your work...'
+            />
+            <Form.Input
+              type="date"
+              label="Date"
+              value={worksForm.date}
+              onChange={(e) => setWorksForm({ ...worksForm, date: e.target.value })}
+            />
+            <Form.Input
+              label="Image URL"
+              value={worksForm.imageUrl}
+              onChange={(e) => setWorksForm({ ...worksForm, imageUrl: e.target.value })}
+              placeholder='Work photo URL'
+            />
+          </Form>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setShowWorksForm(false)}>Cancel</Button>
+          <Button positive onClick={submitWorks}>Submit</Button>
+        </Modal.Actions>
+      </Modal>
+
     </Container>
 
   )

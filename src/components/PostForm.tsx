@@ -32,7 +32,7 @@ function PostForm(props) {
     function addStatus() {
 
         props.submit({
-            key: moment().format("YYYYMMHHhhmmss"),
+            key: new Date().getTime(),
             data: {
                 post: status,
                 tags: [],

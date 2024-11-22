@@ -31,11 +31,11 @@ const Inbox = () => {
 
     return (
         <Segment>
-            <Header as='h2'>
+            <Header as='h2'  style={{ background: 'transparent' }}>
                 <Icon name='inbox' />
                 <Header.Content>
                     Inbox
-                    <Header.Subheader>{messages.length} messages</Header.Subheader>
+                    <Header.Subheader  style={{ background: 'transparent' }}>{messages.length} messages</Header.Subheader>
                 </Header.Content>
             </Header>
       
@@ -44,10 +44,11 @@ const Inbox = () => {
                     <Message 
                         key={msg.key}
                         floating
-                        style={{ marginBottom: '1em' }}
+                        style={{ marginBottom: '1em',background: 'transparent' }}
+   
                     >
                         <Message.Content>
-                            <Message.Header style={{ color: '#2185d0' }}>
+                            <Message.Header >
                                 <Icon name='calendar' />
                                 {moment(Number(msg.created_at) / 1000000).format('YYYY-MM-DD HH:mm')}
                             </Message.Header>

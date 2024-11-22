@@ -22,6 +22,7 @@ function Posts() {
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
+  const [lastKey, setLastKey] = useState();
 
   useEffect(() => {
     const sub = authSubscribe((user) => {
@@ -33,17 +34,27 @@ function Posts() {
   }, [user]);
 
   const list = async () => {
-    console.log("retrieve status ...")
-    const { items } = await listDocs({
+
+    const { items,items_length,items_page,matches_length,matches_pages } = await listDocs({
       collection: "post",
-      filter: {
+      filter: {             
         order: {
           desc: true,
           field: "created_at",
         },
+        paginate: {
+          
+          limit: postsPerPage,
+        },
+
       },
     });
-    console.log(items)
+    console.log("items_length:", items_length)
+    console.log("items_page:", items_page)
+    console.log("matches_length:", matches_length)
+    console.log("matches_pages:", matches_pages)
+
+    setCurrentPage(Number(items_page)+1);    
     setItems(items);
   };
 
