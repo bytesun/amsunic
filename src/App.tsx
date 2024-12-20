@@ -217,7 +217,7 @@ function App() {
             size='mini'
             style={{ marginRight: '1.5em' }}
           />
-          Sun
+          Sun Garden
         </Menu.Item>
         <Menu.Item position='right'><Auth /></Menu.Item>
       </Menu>
@@ -225,13 +225,7 @@ function App() {
         <Grid.Column mobile={16} computer={5}>
           <Card fluid>
             <Card.Content>
-              Dream Big
-              <Card.Content>
-              </Card.Content>
-              <Label>Blockchain</Label>
-              <Label>Hiking</Label>
-              <Label>Garden</Label>
-              {user?.key}
+              Be a gardener: plant the seeds, nurture them with care, and reap the harvest.
             </Card.Content>
 
           </Card>
